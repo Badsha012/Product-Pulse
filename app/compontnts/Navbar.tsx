@@ -1,12 +1,20 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
+
+  // function for active class
+  const isActive = (path) =>
+    pathname === path
+      ? "text-white font-semibold underline underline-offset-4"
+      : "text-gray-300 hover:text-white transition";
+
   return (
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-gray-800 via-gray-900 to-black border-b border-gray-700 shadow-lg">
       <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
-
         {/* Logo + Menu */}
         <div className="flex items-center gap-6">
           <img
@@ -23,21 +31,31 @@ export default function Navbar() {
           </Link>
 
           <div className="hidden md:flex gap-6 ml-10">
-            <Link href="/" className="text-gray-300 hover:text-white transition">
+            <Link href="/" className={isActive("/")}>
               Home
             </Link>
-            <Link href="/products" className="text-gray-300 hover:text-white transition">
+
+            <Link href="/products" className={isActive("/products")}>
               Products
             </Link>
-            <a href="#features" className="text-gray-300 hover:text-white transition">
+
+            <Link
+              href="/features"
+              className={isActive("/features")}
+            >
               Features
-            </a>
-            <a href="#testimonials" className="text-gray-300 hover:text-white transition">
+            </Link>
+
+            <a
+              href="#testimonials"
+              className="text-gray-300 hover:text-white transition"
+            >
               Testimonials
             </a>
-            <a href="#contact" className="text-gray-300 hover:text-white transition">
+
+            <Link href="/contact" className={isActive("/contact")}>
               Contact
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -45,19 +63,24 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link
             href="/login"
-            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-200 hover:bg-gray-300 hover:text-black transition"
+            className={
+              isActive("/login") +
+              " px-4 py-2 border border-gray-300 rounded-lg"
+            }
           >
             Login
           </Link>
 
           <Link
             href="/register"
-            className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 transition shadow"
+            className={
+              isActive("/register") +
+              " px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 transition shadow"
+            }
           >
             Register
           </Link>
         </div>
-
       </div>
     </nav>
   );
