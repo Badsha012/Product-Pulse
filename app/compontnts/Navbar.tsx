@@ -46,13 +46,6 @@ export default function Navbar() {
               Features
             </Link>
 
-            <a
-              href="#testimonials"
-              className="text-gray-300 hover:text-white transition"
-            >
-              Testimonials
-            </a>
-
             <Link href="/contact" className={isActive("/contact")}>
               Contact
             </Link>
