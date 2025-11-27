@@ -4,13 +4,34 @@ import { FaCheckCircle } from "react-icons/fa";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function HomePage() {
-  const [products, setProducts] = useState([]);
+// ✅ Product Type
+type Product = {
+  _id: string;
+  title: string;
+  image: string;
+  price: number;
+  shortDescription: string;
+  category?: string;
+  name: string;   // search filter এর জন্য
+  show: boolean;  // filter result এর জন্য
+};
 
+export default function HomePage() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // ✅ Fetch Products + add name + show
   useEffect(() => {
     fetch("http://localhost:5000/products")
       .then((res) => res.json())
-      .then((data) => setProducts(data))
+      .then((data) =>
+        setProducts(
+          data.map((p: any) => ({
+            ...p,
+            name: p.title.toLowerCase(),
+            show: true,
+          }))
+        )
+      )
       .catch((err) => console.log(err));
   }, []);
 
@@ -19,17 +40,7 @@ export default function HomePage() {
     { title: "Responsive Design", desc: "Perfectly fits all devices—from mobile to large desktops." },
     { title: "Secure System", desc: "We use modern security measures to protect your data." },
     { title: "User Friendly UI", desc: "Clean and intuitive design ensures a great user experience." },
-    { title: "Real-Time Updates", desc: "Information and status update instantly without page reload." },
-    { title: "Cloud Storage", desc: "Store and manage your data securely in the cloud." },
-    { title: "24/7 Support", desc: "Our team is always available to assist you anytime." },
-    { title: "Customizable Settings", desc: "Easily adjust features to match your personal preferences." },
-    { title: "Data Analytics", desc: "Get valuable insights through detailed analytics and reports." },
-    { title: "Multi-Language Support", desc: "Use the platform in your preferred language effortlessly." },
-    { title: "Offline Mode", desc: "Access important features even without an internet connection." },
-    { title: "Advanced Search", desc: "Find anything quickly using powerful search capabilities." },
-    { title: "Notification System", desc: "Receive instant alerts on important updates and activities." },
-    { title: "Role-Based Access", desc: "Control user permissions with powerful access management." },
-    { title: "Integration Ready", desc: "Easily connect with third-party apps and tools." },
+    { title: "Multi-Language Support", desc: "Use the platform in your preferred language effortlessly." }, { title: "Offline Mode", desc: "Access important features even without an internet connection." },
   ];
 
   const testimonials = [
@@ -56,10 +67,9 @@ export default function HomePage() {
   return (
     <div className="bg-gray-50 text-gray-900">
 
-      {/* Hero Section */}
+      {/* HERO SECTION */}
       <section className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-24">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-          
           <div>
             <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
               Discover Smarter <span className="text-blue-400">Product Insights</span>
@@ -89,7 +99,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* FEATURES SECTION */}
       <section className="max-w-7xl w-11/12 mx-auto py-20">
         <h2 className="text-4xl font-bold text-center mb-6">Our Features</h2>
         <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
@@ -107,94 +117,104 @@ export default function HomePage() {
         </div>
       </section>
 
-  {/* 🔥 Home Item Section (Updated) */}
-<section className="py-20 bg-white">
-  <div className="max-w-7xl w-11/12 mx-auto text-center">
+      {/* 🔥 HOME ITEMS SECTION */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl w-11/12 mx-auto text-center">
 
-    {/* Title */}
-    <h2 className="text-3xl font-bold mb-4">Trending Items</h2>
-    <p className="text-gray-600 mb-14">
-      Most searched & highly rated products this week.
-    </p>
+          <h2 className="text-3xl font-bold mb-4">Trending Items</h2>
+          <p className="text-gray-600 mb-14">
+            Most searched & highly rated products this week.
+          </p>
 
-    {/* Search + Filter */}
-    <div className="flex flex-col md:flex-row gap-4 justify-center mb-10">
-      <input
-        type="text"
-        placeholder="Search items..."
-        className="px-4 py-3 border rounded-lg w-full md:w-72"
-        onChange={(e) => {
-          const value = e.target.value.toLowerCase();
-          setProducts((prev) =>
-            prev.map((p) => ({ ...p, show: p.name.toLowerCase().includes(value) }))
-          );
-        }}
-      />
-
-      <select
-        className="px-4 py-3 border rounded-lg w-full md:w-60"
-        onChange={(e) => {
-          const value = e.target.value;
-          setProducts((prev) =>
-            prev.map((p) => ({ ...p, show: value ? p.category === value : true }))
-          );
-        }}
-      >
-        <option value="">All Categories</option>
-        <option value="electronics">Electronics</option>
-        <option value="fashion">Fashion</option>
-        <option value="beauty">Beauty</option>
-        <option value="home">Home & Living</option>
-      </select>
-    </div>
-
-    {/* Items Grid */}
-    <div className="grid md:grid-cols-3 gap-10">
-      {products.slice(0, 6).map((product) => (
-        product.show !== false && (
-          <div
-            key={product._id}
-            className="p-6 bg-gray-50 rounded-xl border hover:shadow-lg transition"
-          >
-            <img
-              src={product.image}
-              className="rounded-md mb-4 h-48 w-full object-cover"
-              alt={product.name}
+          {/* SEARCH + CATEGORY FILTER */}
+          <div className="flex flex-col md:flex-row gap-4 justify-center mb-10">
+            
+            {/* Search */}
+            <input
+              type="text"
+              placeholder="Search items..."
+              className="px-4 py-3 border rounded-lg w-full md:w-72"
+              onChange={(e) => {
+                const value = e.target.value.toLowerCase();
+                setProducts((prev) =>
+                  prev.map((p) => ({
+                    ...p,
+                    show: p.name.includes(value),
+                  }))
+                );
+              }}
             />
 
-            <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
-
-            <p className="text-gray-600 mb-3">
-              {product.shortDescription?.slice(0, 60)}...
-            </p>
-
-            <div className="flex justify-between items-center">
-              <p className="text-blue-600 font-bold text-lg">${product.price}</p>
-
-              <Link
-                href={`/products/${product._id}`}
-                className="text-blue-600 font-semibold hover:underline"
-              >
-                View Details →
-              </Link>
-            </div>
+            {/* Category Filter */}
+            <select
+              className="px-4 py-3 border rounded-lg w-full md:w-60"
+              onChange={(e) => {
+                const value = e.target.value;
+                setProducts((prev) =>
+                  prev.map((p) => ({
+                    ...p,
+                    show: value ? p.category === value : true,
+                  }))
+                );
+              }}
+            >
+              <option value="">All Categories</option>
+              <option value="electronics">Electronics</option>
+              <option value="fashion">Fashion</option>
+              <option value="beauty">Beauty</option>
+              <option value="home">Home & Living</option>
+            </select>
           </div>
-        )
-      ))}
-    </div>
-  </div>
-</section>
 
+          {/* PRODUCTS GRID */}
+          <div className="grid md:grid-cols-3 gap-10">
+            {products.slice(0, 6).map(
+              (product) =>
+                product.show && (
+                  <div
+                    key={product._id}
+                    className="p-6 bg-gray-50 rounded-xl border hover:shadow-lg transition"
+                  >
+                    <img
+                      src={product.image}
+                      className="rounded-md mb-4 h-48 w-full object-cover"
+                      alt={product.title}
+                    />
 
-      {/* Testimonials */}
+                    <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
+
+                    <p className="text-gray-600 mb-3">
+                      {product.shortDescription?.slice(0, 60)}...
+                    </p>
+
+                    <div className="flex justify-between items-center">
+                      <p className="text-blue-600 font-bold text-lg">৳{product.price}</p>
+
+                      <Link
+                        href={`/products/${product._id}`}
+                        className="text-blue-600 font-semibold hover:underline"
+                      >
+                        View Details →
+                      </Link>
+                    </div>
+                  </div>
+                )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
       <section className="py-20 bg-gray-100">
         <div className="max-w-7xl w-11/12 mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
-          <p className="text-gray-600 mb-14">Real reviews shared by our happy and satisfied users.</p>
+          <p className="text-gray-600 mb-14">
+            Real reviews shared by our happy and satisfied users.
+          </p>
 
           <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((c, i) => (
-              <div key={i} className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
+              <div key={i} className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition">
                 <div className="text-5xl text-blue-500 mb-4">“</div>
                 <p className="text-gray-700 mb-6">{c.text}</p>
 
@@ -211,7 +231,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="bg-blue-600 text-white py-16 text-center">
         <h2 className="text-3xl font-bold">Ready to Get Started?</h2>
         <p className="mt-2 text-lg text-blue-100">Discover smarter product recommendations today.</p>
