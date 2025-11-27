@@ -12,9 +12,9 @@ type Product = {
   price: number;
   shortDescription: string;
   category?: string;
-  name: string;   // search filter এর জন্য
-  show: boolean;  // filter result এর জন্য
-};
+  name: string;   
+  show: boolean;
+ } 
 
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -117,7 +117,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🔥 HOME ITEMS SECTION */}
+      {/* HOME ITEMS SECTION */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl w-11/12 mx-auto text-center">
 

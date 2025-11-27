@@ -1,44 +1,29 @@
 export const dynamic = "force-dynamic";
+import Link from "next/link";
 
 type Product = {
-  id: string;
+  _id: string;
   title: string;
-  description: string;
+  shortDescription: string;
+  description?: string;
   price: number;
   image?: string;
 };
 
-async function getProduct(id: string): Promise<Product | null> {
-  try {
-    const res = await fetch(`http://localhost:5000/items/${id}`, {
-      cache: "no-store",
-    });
+export default async function ProductDetailsPage({ params }: any) {
+  const res = await fetch(`http://localhost:5000/products/${params.id}`, {
+    cache: "no-store",
+  });
 
-    if (!res.ok) return null;
-
-    return await res.json();
-  } catch (err) {
-    console.error("Fetch failed:", err);
-    return null;
-  }
-}
-
-export default async function ProductDetailsPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const product = await getProduct(params.id);
-
-  if (!product) {
+  if (!res.ok) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <h1 className="text-red-500 text-2xl font-bold">
-          Product not found!
-        </h1>
+      <div className="p-6 text-red-600 font-bold text-xl">
+        Product not found!
       </div>
     );
   }
+
+  const product: Product = await res.json();
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -48,15 +33,20 @@ export default async function ProductDetailsPage({
         <img
           src={product.image}
           alt={product.title}
-          className="w-full max-h-96 object-cover rounded-xl mb-6"
+          className="w-full h-80 object-cover rounded-lg mb-5"
         />
       )}
 
-      <p className="text-lg text-gray-700 mb-4">{product.description}</p>
+      <p className="text-gray-700 mb-3">{product.shortDescription}</p>
 
-      <p className="text-2xl font-semibold text-blue-600">
-        ৳ {product.price}
-      </p>
+      <p className="text-2xl font-semibold text-blue-600">৳ {product.price}</p>
+
+      <Link
+        href="/items"
+        className="inline-block mt-6 px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900"
+      >
+        Back
+      </Link>
     </div>
   );
 }
