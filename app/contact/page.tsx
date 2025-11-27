@@ -69,7 +69,7 @@ export default function Contact() {
               />
 
               <textarea
-                rows="5"
+                rows={5}
                 placeholder="Your Message"
                 className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 text-gray-200"
               ></textarea>
