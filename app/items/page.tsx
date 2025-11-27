@@ -1,6 +1,14 @@
 export const dynamic = "force-dynamic";
 
-async function getProducts() {
+type Product = {
+  _id: string;
+  title: string;
+  image: string;
+  price: number;
+  shortDescription: string;
+};
+
+async function getProducts(): Promise<Product[]> {
   const res = await fetch("http://localhost:5000/products", {
     cache: "no-store",
   });
@@ -18,7 +26,7 @@ export default async function ProductsPage() {
       <h1 className="text-3xl font-bold mb-6 text-pink-600">All Products</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {products.map((product: any) => (
+        {products.map((product) => (
           <div
             key={product._id}
             className="border rounded-lg p-4 bg-white shadow hover:shadow-lg transition"
