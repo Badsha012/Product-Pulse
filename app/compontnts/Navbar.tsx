@@ -7,7 +7,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   // function for active class
-  const isActive = (path) =>
+  const isActive = (path: string): string =>
     pathname === path
       ? "text-white font-semibold underline underline-offset-4"
       : "text-gray-300 hover:text-white transition";
@@ -39,10 +39,7 @@ export default function Navbar() {
               Products
             </Link>
 
-            <Link
-              href="/features"
-              className={isActive("/features")}
-            >
+            <Link href="/features" className={isActive("/features")}>
               About
             </Link>
 
