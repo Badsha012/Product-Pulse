@@ -35,7 +35,7 @@ export default function Navbar() {
               Home
             </Link>
 
-            <Link href="/products" className={isActive("/products")}>
+            <Link href="/items" className={isActive("/items")}>
               Products
             </Link>
 
@@ -43,7 +43,7 @@ export default function Navbar() {
               href="/features"
               className={isActive("/features")}
             >
-              Features
+              About
             </Link>
 
             <Link href="/contact" className={isActive("/contact")}>

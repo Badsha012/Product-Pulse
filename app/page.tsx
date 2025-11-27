@@ -1,15 +1,65 @@
 "use client";
 
+import { FaCheckCircle } from "react-icons/fa";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/products")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  const features = [
+    { title: "Fast Performance", desc: "Our platform is optimized for speed, providing smooth and seamless performance." },
+    { title: "Responsive Design", desc: "Perfectly fits all devices—from mobile to large desktops." },
+    { title: "Secure System", desc: "We use modern security measures to protect your data." },
+    { title: "User Friendly UI", desc: "Clean and intuitive design ensures a great user experience." },
+    { title: "Real-Time Updates", desc: "Information and status update instantly without page reload." },
+    { title: "Cloud Storage", desc: "Store and manage your data securely in the cloud." },
+    { title: "24/7 Support", desc: "Our team is always available to assist you anytime." },
+    { title: "Customizable Settings", desc: "Easily adjust features to match your personal preferences." },
+    { title: "Data Analytics", desc: "Get valuable insights through detailed analytics and reports." },
+    { title: "Multi-Language Support", desc: "Use the platform in your preferred language effortlessly." },
+    { title: "Offline Mode", desc: "Access important features even without an internet connection." },
+    { title: "Advanced Search", desc: "Find anything quickly using powerful search capabilities." },
+    { title: "Notification System", desc: "Receive instant alerts on important updates and activities." },
+    { title: "Role-Based Access", desc: "Control user permissions with powerful access management." },
+    { title: "Integration Ready", desc: "Easily connect with third-party apps and tools." },
+  ];
+
+  const testimonials = [
+    {
+      text: "Amazing platform! Helped me compare products easily.",
+      img: "https://i.pravatar.cc/150?img=3",
+      name: "John Doe",
+      role: "Product Researcher",
+    },
+    {
+      text: "User-friendly and clean UI. Highly recommended!",
+      img: "https://i.pravatar.cc/150?img=5",
+      name: "Sarah Parker",
+      role: "Marketing Specialist",
+    },
+    {
+      text: "Loved the real-time updates and performance.",
+      img: "https://i.pravatar.cc/150?img=8",
+      name: "Michael Smith",
+      role: "Tech Enthusiast",
+    },
+  ];
+
   return (
     <div className="bg-gray-50 text-gray-900">
 
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-24">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-
+          
           <div>
             <h1 className="text-5xl md:text-6xl font-extrabold leading-tight">
               Discover Smarter <span className="text-blue-400">Product Insights</span>
@@ -19,17 +69,11 @@ export default function HomePage() {
             </p>
 
             <div className="mt-7 flex gap-4">
-              <Link
-                href="/products"
-                className="px-7 py-3 bg-blue-500 hover:bg-blue-600 transition rounded-lg font-semibold"
-              >
+              <Link href="/products" className="px-7 py-3 bg-blue-500 hover:bg-blue-600 transition rounded-lg font-semibold">
                 Explore Products
               </Link>
 
-              <Link
-                href="/about"
-                className="px-7 py-3 border border-gray-400 rounded-lg hover:bg-gray-800 transition font-semibold"
-              >
+              <Link href="/features" className="px-7 py-3 border border-gray-400 rounded-lg hover:bg-gray-800 transition font-semibold">
                 Learn More
               </Link>
             </div>
@@ -37,9 +81,9 @@ export default function HomePage() {
 
           <div>
             <img
-              src="https://i.ibb.co/SXqh9tY/hero-product.png"
-              alt="Hero Image"
-              className="rounded-xl shadow-xl"
+              src="https://i.ibb.co.com/Xx02q218/business-people-with-magnifying-glass-diagrams-1262-18919.jpg"
+              alt="Hero"
+              className="rounded-xl w-full shadow-xl"
             />
           </div>
         </div>
@@ -47,142 +91,130 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section className="max-w-7xl w-11/12 mx-auto py-20">
-        <h2 className="text-3xl font-bold text-center mb-4">Why Choose ProductPulse?</h2>
-        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-14">
-          We offer smarter tools and verified insights to help you pick the best products with ease.
+        <h2 className="text-4xl font-bold text-center mb-6">Our Features</h2>
+        <p className="text-center text-gray-600 max-w-2xl mx-auto mb-12">
+          Discover the powerful features that make our website stand out.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-10">
-          {[
-            {
-              title: "Verified Reviews",
-              desc: "Every review is checked for quality and authenticity."
-            },
-            {
-              title: "AI-Powered Product Matching",
-              desc: "We recommend products based on your preferences."
-            },
-            {
-              title: "Modern & Clean UI",
-              desc: "Smooth navigation with a beautiful and responsive layout."
-            }
-          ].map((f, i) => (
-            <div
-              key={i}
-              className="p-8 rounded-2xl bg-white border shadow-sm hover:shadow-xl transition duration-300"
-            >
-              <h3 className="text-xl font-semibold mb-3">{f.title}</h3>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((f, i) => (
+            <div key={i} className="p-6 border rounded-xl shadow-md hover:shadow-xl transition bg-white">
+              <FaCheckCircle className="text-blue-600 text-3xl mb-3" />
+              <h2 className="text-xl font-semibold mb-2">{f.title}</h2>
               <p className="text-gray-600">{f.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Trending Items Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl w-11/12 mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Trending Items</h2>
-          <p className="text-gray-600 mb-14">Most searched & highly rated products this week.</p>
+  {/* 🔥 Home Item Section (Updated) */}
+<section className="py-20 bg-white">
+  <div className="max-w-7xl w-11/12 mx-auto text-center">
 
-          <div className="grid md:grid-cols-3 gap-10">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="p-6 bg-gray-50 rounded-xl border hover:shadow-lg transition">
-                <img
-                  src={`https://i.ibb.co/SXqh9tY/hero-product.png`}
-                  className="rounded-md mb-4"
-                />
-                <h3 className="text-xl font-semibold mb-2">Product {i}</h3>
-                <p className="text-gray-600 mb-3">High quality product with top ratings.</p>
-                <Link
-                  href="/products"
-                  className="text-blue-600 font-semibold hover:underline"
-                >
-                  View Details →
-                </Link>
+    {/* Title */}
+    <h2 className="text-3xl font-bold mb-4">Trending Items</h2>
+    <p className="text-gray-600 mb-14">
+      Most searched & highly rated products this week.
+    </p>
+
+    {/* Search + Filter */}
+    <div className="flex flex-col md:flex-row gap-4 justify-center mb-10">
+      <input
+        type="text"
+        placeholder="Search items..."
+        className="px-4 py-3 border rounded-lg w-full md:w-72"
+        onChange={(e) => {
+          const value = e.target.value.toLowerCase();
+          setProducts((prev) =>
+            prev.map((p) => ({ ...p, show: p.name.toLowerCase().includes(value) }))
+          );
+        }}
+      />
+
+      <select
+        className="px-4 py-3 border rounded-lg w-full md:w-60"
+        onChange={(e) => {
+          const value = e.target.value;
+          setProducts((prev) =>
+            prev.map((p) => ({ ...p, show: value ? p.category === value : true }))
+          );
+        }}
+      >
+        <option value="">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="fashion">Fashion</option>
+        <option value="beauty">Beauty</option>
+        <option value="home">Home & Living</option>
+      </select>
+    </div>
+
+    {/* Items Grid */}
+    <div className="grid md:grid-cols-3 gap-10">
+      {products.slice(0, 6).map((product) => (
+        product.show !== false && (
+          <div
+            key={product._id}
+            className="p-6 bg-gray-50 rounded-xl border hover:shadow-lg transition"
+          >
+            <img
+              src={product.image}
+              className="rounded-md mb-4 h-48 w-full object-cover"
+              alt={product.name}
+            />
+
+            <h3 className="text-xl font-semibold mb-2">{product.title}</h3>
+
+            <p className="text-gray-600 mb-3">
+              {product.shortDescription?.slice(0, 60)}...
+            </p>
+
+            <div className="flex justify-between items-center">
+              <p className="text-blue-600 font-bold text-lg">${product.price}</p>
+
+              <Link
+                href={`/products/${product._id}`}
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                View Details →
+              </Link>
+            </div>
+          </div>
+        )
+      ))}
+    </div>
+  </div>
+</section>
+
+
+      {/* Testimonials */}
+      <section className="py-20 bg-gray-100">
+        <div className="max-w-7xl w-11/12 mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
+          <p className="text-gray-600 mb-14">Real reviews shared by our happy and satisfied users.</p>
+
+          <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map((c, i) => (
+              <div key={i} className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
+                <div className="text-5xl text-blue-500 mb-4">“</div>
+                <p className="text-gray-700 mb-6">{c.text}</p>
+
+                <div className="flex items-center gap-4">
+                  <img src={c.img} className="w-16 h-16 rounded-full border-2 border-blue-200" alt={c.name} />
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-lg">{c.name}</h4>
+                    <p className="text-gray-500 text-sm">{c.role}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-     {/* Testimonials Section */}
-<section className="py-20 bg-gray-100">
-  <div className="max-w-7xl w-11/12 mx-auto text-center">
-    <h2 className="text-3xl font-bold mb-4">What Our Customers Say</h2>
-    <p className="text-gray-600 mb-14">
-      Real reviews shared by our happy and satisfied users.
-    </p>
-
-    <div className="grid gap-10 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {[
-        {
-          text: "A posture corrector provides support and alignment to your shoulders. Really helpful for long rides.",
-          img: "https://randomuser.me/api/portraits/men/32.jpg",
-          name: "Awlad Hossin",
-          role: "Senior Product Designer"
-        },
-        {
-          text: "It gently aligns your back and keeps you productive. Excellent service!",
-          img: "https://randomuser.me/api/portraits/men/45.jpg",
-          name: "Rasel Ahmed",
-          role: "CTO"
-        },
-        {
-          text: "Reduces back strain and improves posture alignment. Highly recommend!",
-          img: "https://randomuser.me/api/portraits/men/12.jpg",
-          name: "Nasir Uddin",
-          role: "CEO"
-        },
-        {
-          text: "The service is fast, reliable, and very user-friendly. Love it!",
-          img: "https://randomuser.me/api/portraits/women/22.jpg",
-          name: "Sara Khan",
-          role: "Marketing Head"
-        },
-        {
-          text: "Highly recommend! Very professional and prompt service.",
-          img: "https://randomuser.me/api/portraits/women/44.jpg",
-          name: "Emily Clark",
-          role: "Project Manager"
-        },
-        {
-          text: "The experience was amazing! I will definitely use this service again.",
-          img: "https://randomuser.me/api/portraits/men/65.jpg",
-          name: "David Wilson",
-          role: "Entrepreneur"
-        }
-      ].map((c, i) => (
-        <div
-          key={i}
-          className="bg-white p-8 rounded-3xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1"
-        >
-          <div className="text-5xl text-blue-500 mb-4">“</div>
-          <p className="text-gray-700 mb-6">{c.text}</p>
-
-          <div className="flex items-center gap-4">
-            <img
-              src={c.img}
-              className="w-16 h-16 rounded-full border-2 border-blue-200"
-              alt={c.name}
-            />
-            <div>
-              <h4 className="font-bold text-gray-900 text-lg">{c.name}</h4>
-              <p className="text-gray-500 text-sm">{c.role}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-      {/* CTA Banner */}
+      {/* CTA Section */}
       <section className="bg-blue-600 text-white py-16 text-center">
         <h2 className="text-3xl font-bold">Ready to Get Started?</h2>
-        <p className="mt-2 text-lg text-blue-100">
-          Discover smarter product recommendations today.
-        </p>
+        <p className="mt-2 text-lg text-blue-100">Discover smarter product recommendations today.</p>
 
         <Link
           href="/register"
@@ -191,6 +223,7 @@ export default function HomePage() {
           Create Account
         </Link>
       </section>
+
     </div>
   );
 }
