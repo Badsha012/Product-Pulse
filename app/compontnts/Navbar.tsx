@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
 
   const isActive = (path: string): string =>
@@ -40,26 +42,41 @@ export default function Navbar() {
           <Link href="/items" className={isActive("/items")}>Products</Link>
           <Link href="/features" className={isActive("/features")}>About</Link>
           <Link href="/contact" className={isActive("/contact")}>Contact</Link>
-          <Link href="/addproduct" className={isActive("/addproduct")}>Add Product </Link>
 
-             <Link href="/manages" className={isActive("/manages")}>Manage Products </Link>
+          {session && (
+            <>
+              <Link href="/addproduct" className={isActive("/addproduct")}>Add Product</Link>
+              <Link href="/manages" className={isActive("/manages")}>Manage Products</Link>
+            </>
+          )}
         </div>
 
         {/* Desktop Auth Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            href="/login"
-            className={isActive("/login") + " px-4 py-2 border border-gray-300 rounded-lg"}
-          >
-            Login
-          </Link>
+          {!session ? (
+            <>
+              <Link
+                href="/login"
+                className={isActive("/login") + " px-4 py-2 border border-gray-300 rounded-lg"}
+              >
+                Login
+              </Link>
 
-          <Link
-            href="/register"
-            className={isActive("/register") + " px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 transition shadow"}
-          >
-            Register
-          </Link>
+              <Link
+                href="/register"
+                className={isActive("/register") + " px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 transition shadow"}
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={() => signOut()}
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400 shadow"
+            >
+              Logout
+            </button>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -74,42 +91,45 @@ export default function Navbar() {
       {/* Mobile Dropdown Menu */}
       {open && (
         <div className="md:hidden bg-gray-900 border-t border-gray-700 px-6 py-4 space-y-4">
-          <Link href="/" className={isActive("/")} onClick={() => setOpen(false)}>
-            Home
-          </Link>
-          <Link href="/items" className={isActive("/items")} onClick={() => setOpen(false)}>
-            Products
-          </Link>
-          <Link href="/features" className={isActive("/features")} onClick={() => setOpen(false)}>
-            About
-          </Link>
-          <Link href="/contact" className={isActive("/contact")} onClick={() => setOpen(false)}>
-            Contact
-          </Link>
-            <Link href="/addproduct" className={isActive("/addproduct")} onClick={() => setOpen(false)}>
-            Contact
-          </Link>
-          
-         <Link href="/manages" className={isActive("/manages")} onClick={() => setOpen(false)}>
-           Manage Products 
-           </Link>
+          <Link href="/" className={isActive("/")} onClick={() => setOpen(false)}>Home</Link>
+          <Link href="/items" className={isActive("/items")} onClick={() => setOpen(false)}>Products</Link>
+          <Link href="/features" className={isActive("/features")} onClick={() => setOpen(false)}>About</Link>
+          <Link href="/contact" className={isActive("/contact")} onClick={() => setOpen(false)}>Contact</Link>
+
+          {session && (
+            <>
+              <Link href="/addproduct" className={isActive("/addproduct")} onClick={() => setOpen(false)}>Add Product</Link>
+              <Link href="/manages" className={isActive("/manages")} onClick={() => setOpen(false)}>Manage Products</Link>
+            </>
+          )}
 
           <div className="pt-3 space-y-3">
-            <Link
-              href="/login"
-              className={isActive("/login") + " block px-4 py-2 border border-gray-300 rounded-lg"}
-              onClick={() => setOpen(false)}
-            >
-              Login
-            </Link>
+            {!session ? (
+              <>
+                <Link
+                  href="/login"
+                  className={isActive("/login") + " block px-4 py-2 border border-gray-300 rounded-lg"}
+                  onClick={() => setOpen(false)}
+                >
+                  Login
+                </Link>
 
-            <Link
-              href="/register"
-              className={isActive("/register") + " block px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 transition shadow"}
-              onClick={() => setOpen(false)}
-            >
-              Register
-            </Link>
+                <Link
+                  href="/register"
+                  className={isActive("/register") + " block px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-400 transition shadow"}
+                  onClick={() => setOpen(false)}
+                >
+                  Register
+                </Link>
+              </>
+            ) : (
+              <button
+                onClick={() => { signOut(); setOpen(false); }}
+                className="block w-full px-4 py-2 bg-red-500 text-white rounded-lg"
+              >
+                Logout
+              </button>
+            )}
           </div>
         </div>
       )}
