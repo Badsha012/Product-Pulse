@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 async function getProducts() {
-  const res = await fetch("http://localhost:5000/products", {
+  const res = await fetch("https://product-purse-sever.vercel.app/products", {
     cache: "no-store",
   });
   return res.json();
@@ -12,7 +12,7 @@ export default async function ManageProducts() {
 
   async function deleteProduct(id: string) {
     "use server";
-    await fetch(`http://localhost:5000/products/${id}`, {
+    await fetch(`https://product-purse-sever.vercel.app/products/${id}`, {
       method: "DELETE",
     });
   }

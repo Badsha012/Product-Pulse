@@ -9,7 +9,7 @@ type Product = {
 };
 
 async function getProducts(): Promise<Product[]> {
-  const res = await fetch("http://localhost:5000/products", {
+  const res = await fetch("https://product-purse-sever.vercel.app/products", {
     cache: "no-store",
   });
 

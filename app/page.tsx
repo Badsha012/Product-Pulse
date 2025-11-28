@@ -21,7 +21,7 @@ export default function HomePage() {
 
   // ✅ Fetch Products + add name + show
   useEffect(() => {
-    fetch("http://localhost:5000/products")
+    fetch("https://product-purse-sever.vercel.app/products")
       .then((res) => res.json())
       .then((data) =>
         setProducts(
