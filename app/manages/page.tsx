@@ -19,7 +19,7 @@ export default async function ManageProducts() {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Manage Products</h1>
+      <h1 className="text-3xl text-amber-200 font-bold mb-6">Manage Products</h1>
 
       <div className="grid md:grid-cols-2 gap-6">
 
