@@ -20,11 +20,14 @@ export default function AddProductPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:5000/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+    const res = await fetch(
+      "https://product-purse-sever.vercel.app/products/products",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      }
+    );
 
     if (res.ok) {
       alert("Product added successfully!");
@@ -39,7 +42,6 @@ export default function AddProductPage() {
       <h1 className="text-3xl font-bold mb-6">Add Product</h1>
 
       <form onSubmit={handleSubmit} className="grid gap-4">
-
         <input
           name="title"
           placeholder="Product title"
