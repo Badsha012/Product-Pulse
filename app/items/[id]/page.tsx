@@ -11,7 +11,7 @@ type Product = {
 };
 
 export default async function ProductDetailsPage({ params }: any) {
-  const res = await fetch(`http://localhost:5000/products/${params.id}`, {
+  const res = await fetch(`https://product-purse-sever.vercel.app/products/${params.id}`, {
     cache: "no-store",
   });
 
