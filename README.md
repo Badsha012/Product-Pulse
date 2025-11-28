@@ -173,32 +173,8 @@ Assuming the backend base URL is `http://localhost:3001` (or your deployed backe
 
 ---
 
-## ✅ Troubleshooting
 
-* **Nothing to commit** in Git: ensure files are saved and run `git status` → `git add .` → `git commit -m "msg"` → `git push`.
-* **Vercel server error**: usually caused by trying to run Express on Vercel — move backend to a proper host and update frontend API URL.
-* **CORS / API inaccessible**: ensure backend allows requests from frontend origin or use a proper deployed backend URL.
 
----
 
-## 🧩 Tips & Improvements
 
-* Convert the Express API to serverless functions (if you prefer keeping everything on Vercel) — but that requires code changes (stateless handlers, file storage, etc.).
-* Add persistent storage (MongoDB / PostgreSQL) for products instead of a JSON file.
-* Add image upload to S3 / Cloudinary.
-* Add role-based auth for admin-only actions.
 
----
-
-## 📜 License
-
-MIT License
-
----
-
-If you want, I can:
-
-* generate a ready-to-commit `README.md` file in the repo,
-* or create deployment scripts for Render/Railway and show exact steps to deploy the backend and update the frontend.
-
-Tell me which one you prefer.
