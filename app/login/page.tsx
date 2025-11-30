@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import React from "react";
 
 export default function Login() {
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+
+    const form = e.currentTarget;
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const password = (form.elements.namedItem("password") as HTMLInputElement).value;
 
     await signIn("credentials", {
       email,
@@ -20,7 +23,6 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-300 px-4">
       <div className="bg-gray-200 p-8 rounded-2xl shadow-xl w-full max-w-sm">
-        
         <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">
           Welcome Back
         </h2>
@@ -29,7 +31,6 @@ export default function Login() {
         </p>
 
         <form className="space-y-4" onSubmit={handleLogin}>
-
           <div>
             <label className="text-sm font-medium text-black">Email</label>
             <input
@@ -37,6 +38,7 @@ export default function Login() {
               type="email"
               placeholder="example@mail.com"
               className="w-full border text-black mt-1 px-3 py-2 rounded-lg"
+              required
             />
           </div>
 
@@ -47,6 +49,7 @@ export default function Login() {
               type="password"
               placeholder="Enter your secure password"
               className="w-full border text-black mt-1 px-3 py-2 rounded-lg"
+              required
             />
           </div>
 
